@@ -5,8 +5,7 @@ var letterSet = ["a", "b", "c","d","e","f","g","h","i","j","k","l","m","o","p","
 var win = 0;
 var loss = 0;
 var guessLeft = 10;
-var usedGues = [];
-var letterToGuess;
+var usedGuess = [];
 
 
 //set variable to select random letter from global variable
@@ -15,14 +14,16 @@ var randomLetter = letterSet[Math.floor(Math.random() * letterSet.length)];
 console.log(randomLetter);
 
 
-
-if(guessLeft === 0){
-    resetGame();
-
-}; 
+//-----functions--------
 
 
-//--------functions-----------------
+//function to pick new letter after win or loss
+
+function newLetter(){
+    randomLetter = letterSet[Math.floor(Math.random()*letterSet.length)];
+}
+
+
 function printResult(){
 
     document.getElementById('wins').innerHTML = win;
@@ -31,36 +32,44 @@ function printResult(){
 };
 
 
-
 function resetGame(){
-    var letterSet = ["a", "b", "c","d","e","f","g","h","i","j","k","l","m","o","p","q","r","s","t","u","v","w","x","y","z"];
-    var win = 0;
-    var loss = 0;
-    var guessLeft = 9;
-    var usedGues = [];
-    var letterToGuess;
-    var randomLetter = letterSet[Math.floor(Math.random() * letterSet.length)];
+    guessLeft = 9;
+    usedGuess.length = 0;
+    newLetter();
+    console.log(randomLetter);
 }
+
+
+//-----main------
 
 
 document.onkeyup = function(event){
 
-    var userguess = event.key;
+    var userGuess = event.key;
 
-    if ( userguess === randomLetter){
+    if ( userGuess === randomLetter){
         win++;
         alert('you won')
-    }else{
+        resetGame();
+    };
+    
+    if (userGuess !== randomLetter){
+
+        usedGuess.push(userGuess);
+
         guessLeft--;
+
+        document.getElementById('currentGuess').innerHTML = usedGuess;
     };
 
 
     if(guessLeft === 0){
         loss++;
         alert('you lost');
-        
+        resetGame();
 
-    }
+        
+     }
 
     printResult();
     
